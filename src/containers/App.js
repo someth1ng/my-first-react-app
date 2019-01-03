@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import classes from './App.module.css';
-import Person from './Person/Person';
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
+// import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
   state = {
@@ -42,41 +43,20 @@ class App extends Component {
 
   render() {
     let persons = null;
-    let btnClass = '';
 
     if (this.state.showPersons) {
-      persons = (
-        <div>
-          {this.state.persons.map((person, index) => {
-            return <ErrorBoundary key={person.id}>
-              <Person
-                key={person.id}
-                name={person.name}
-                age={person.age}
-                click={() => this.deletePersonHandler(index)}
-                changed={(event) => this.nameChangedHandler(event, person.id)} />
-            </ErrorBoundary>
-          })}
-        </div>
-      );
-      btnClass = classes.Red;
-    }
-
-    const assingedClasses = [];
-    if (this.state.persons.length <= 2) {
-      assingedClasses.push(classes.red);
-    }
-    if (this.state.persons.length <= 1) {
-      assingedClasses.push(classes.bold);
+      persons = <Persons
+            persons={this.state.persons}
+            clicked={this.deletePersonHandler}
+            changed={this.nameChangedHandler} />
     }
 
     return (
       <div className={classes.App}>
-        <h1>Hello, World!</h1>
-        <p className={assingedClasses.join(' ')}>This is dynamicaly classes toggle</p>
-        <button
-        className={btnClass}
-          onClick={this.togglePersonHandler}>Toggle Persons</button>
+        <Cockpit 
+          showPersons={this.state.showPersons}
+          persons={this.state.persons}
+          toggle={this.togglePersonHandler} />
         {persons}
       </div>
     );
